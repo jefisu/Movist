@@ -1,4 +1,4 @@
-package com.jefisu.movist.ui.home_screen
+package com.jefisu.movist.ui.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jefisu.movist.data.ScreenRoute
-import com.jefisu.movist.ui.PersonalizedCard
+import com.jefisu.movist.ui.home.components.PersonalizedCard
 
 @ExperimentalMaterialApi
 @Composable
@@ -24,7 +23,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    val movies = viewModel.movies.observeAsState(listOf())
+    val list = viewModel.state.value
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -51,7 +50,7 @@ fun HomeScreen(
         }
     ) {
         LazyColumn {
-            items(movies.value) {
+            items(list.movies) {
                 PersonalizedCard(movie = it)
             }
         }

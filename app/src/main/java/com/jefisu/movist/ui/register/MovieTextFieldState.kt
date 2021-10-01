@@ -1,4 +1,4 @@
-package com.jefisu.movist.ui.register_screen
+package com.jefisu.movist.ui.register
 
 data class MovieTextFieldState(
     val text: String = "",

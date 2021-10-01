@@ -1,4 +1,4 @@
-package com.jefisu.movist.ui
+package com.jefisu.movist.ui.home.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Checkbox
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -23,7 +24,7 @@ import com.jefisu.movist.data.dto.Movie
 @ExperimentalMaterialApi
 @Composable
 fun PersonalizedCard(
-    movie: Movie,
+    movie: Movie
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -40,10 +41,12 @@ fun PersonalizedCard(
         shape = RoundedCornerShape(15.dp),
         onClick = { isExpanded = !isExpanded }
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
-            Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Column(modifier = Modifier.weight(0.9f)) {
                 Text(
                     text = movie.title,
                     fontSize = 20.sp,

@@ -1,4 +1,4 @@
-package com.jefisu.movist.ui.register_screen
+package com.jefisu.movist.ui.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jefisu.movist.data.ScreenRoute
-import com.jefisu.movist.ui.register_screen.components.TransparentHintTextField
+import com.jefisu.movist.ui.register.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalMaterialApi

@@ -1,4 +1,4 @@
-package com.jefisu.movist.ui.register_screen.components
+package com.jefisu.movist.ui.register.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -44,12 +44,12 @@ fun PersonalizedCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(10.dp)
         ) {
             Column(modifier = Modifier.weight(0.9f)) {
                 Text(
                     text = movie.title,
-                    fontSize = 20.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                 )
                 if (isExpanded) {

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jefisu.movist.data.ScreenRoute
+import com.jefisu.movist.data.Screen
 import com.jefisu.movist.ui.home.components.PersonalizedCard
 
 @ExperimentalMaterialApi
@@ -42,7 +42,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(ScreenRoute.RegisterScreen.route)
+                    navController.navigate(Screen.RegisterScreen.route)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")

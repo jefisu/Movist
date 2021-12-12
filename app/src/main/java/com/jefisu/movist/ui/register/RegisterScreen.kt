@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jefisu.movist.data.ScreenRoute
+import com.jefisu.movist.data.Screen
 import com.jefisu.movist.ui.register.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
 
@@ -42,7 +42,7 @@ fun RegisterScreen(
             FloatingActionButton(
                 onClick = {
                     viewModel.onEvent(RegisterEvent.SaveMovie)
-                    navController.navigate(ScreenRoute.HomeScreen.route)
+                    navController.navigate(Screen.HomeScreen.route)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Save, contentDescription = "Save")

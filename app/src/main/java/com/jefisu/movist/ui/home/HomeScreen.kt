@@ -50,8 +50,13 @@ fun HomeScreen(
         }
     ) {
         LazyColumn {
-            items(list.movies) {
-                PersonalizedCard(movie = it)
+            items(list.movies) { movie ->
+                PersonalizedCard(
+                    movie = movie,
+                    onDeleteClick = {
+                        viewModel.onEvent(HomeEvent.DeleteMovie(movie))
+                    }
+                )
             }
         }
     }

@@ -29,10 +29,7 @@ fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(2000L)
-        navController.navigate(Screen.HomeScreen.route) {
-            popUpTo(Screen.HomeScreen.route)
-            launchSingleTop = true
-        }
+        navController.navigate(Screen.HomeScreen.route)
     }
     Box(
         modifier = Modifier

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.compose.rememberNavController
-import com.jefisu.movist.ui.util.NavGraph
+import com.jefisu.movist.features.presentation.util.NavGraph
 import com.jefisu.movist.ui.theme.MovistTheme
 import dagger.hilt.android.AndroidEntryPoint
 

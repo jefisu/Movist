@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jefisu.movist.features.data.model.InvalidMovieException
-import com.jefisu.movist.features.data.model.MovieDto
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -20,8 +19,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val movieUseCase: MovieUseCase
 ) : ViewModel() {
-
-    private var recentlyDeletedMovieDto: MovieDto? = null
 
     private val _state = mutableStateOf(HomeState())
     val state: State<HomeState> = _state
@@ -48,20 +45,6 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.RestoreMovie -> {
-                viewModelScope.launch {
-                    try {
-                        movieUseCase.insert(recentlyDeletedMovieDto ?: return@launch)
-                        recentlyDeletedMovieDto = null
-                    } catch (e: InvalidMovieException) {
-                        _eventFlow.emit(
-                            UiEvent.ShowSnackBar(
-                                message = e.message ?: "Couldn't restore movie"
-                            )
-                        )
-                    }
-                }
-            }
             is HomeEvent.DeleteMovie -> {
                 viewModelScope.launch {
                     try {

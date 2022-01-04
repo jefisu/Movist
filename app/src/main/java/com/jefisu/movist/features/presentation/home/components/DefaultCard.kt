@@ -28,6 +28,7 @@ import com.jefisu.movist.features.domain.model.Movie
 @Composable
 fun DefaultCard(
     movie: Movie,
+    onClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {}
 ) {
     var isExpanded by remember {
@@ -44,7 +45,8 @@ fun DefaultCard(
                 )
             ),
         backgroundColor = Color.LightGray,
-        shape = RoundedCornerShape(15.dp)
+        shape = RoundedCornerShape(15.dp),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier

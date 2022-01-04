@@ -1,7 +1,8 @@
 package com.jefisu.movist.features.presentation.util
 
 sealed class Screen(val route: String) {
-    object SplashScreen : Screen("splash")
-    object HomeScreen : Screen("Home")
-    object RegisterScreen : Screen("Register")
+    object Splash : Screen("splash")
+    object Home : Screen("home")
+    object Register : Screen("register")
+    object Update : Screen("update")
 }

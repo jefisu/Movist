@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jefisu.movist.features.domain.model.Movie
 import com.jefisu.movist.features.presentation.util.Screen
 import com.jefisu.movist.features.presentation.register.components.TransparentHintTextField
 import kotlinx.coroutines.flow.collectLatest
@@ -18,10 +17,10 @@ import kotlinx.coroutines.flow.collectLatest
 @ExperimentalMaterialApi
 @Composable
 fun RegisterScreen(
+    id: Int? = null,
     navController: NavController,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
-
     val titleState = viewModel.movieTitle.value
     val descriptionState = viewModel.movieDescription.value
     val scaffoldState = rememberScaffoldState()
@@ -42,8 +41,9 @@ fun RegisterScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.onEvent(RegisterEvent.SaveMovie)
-                    navController.navigate(Screen.HomeScreen.route)
+                    if (id != null) viewModel.onEvent(RegisterEvent.SaveMovie(id))
+                    else viewModel.onEvent(RegisterEvent.SaveMovie())
+                    navController.navigate(Screen.Home.route)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Save, contentDescription = "Save")

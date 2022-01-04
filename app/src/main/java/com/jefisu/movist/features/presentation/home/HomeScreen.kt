@@ -52,7 +52,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.RegisterScreen.route)
+                    navController.navigate(Screen.Register.route)
                 }
             ) {
                 Icon(
@@ -66,6 +66,12 @@ fun HomeScreen(
             items(viewModel.state.value.movies) { movie ->
                 DefaultCard(
                     movie = movie,
+                    onClick = {
+                        navController.navigate(Screen.Update.route + "?id=${movie.id}") {
+                            popUpTo(Screen.Home.route)
+                            launchSingleTop = true
+                        }
+                    },
                     onDeleteClick = {
                         viewModel.onEvent(HomeEvent.DeleteMovie(movie))
                     }

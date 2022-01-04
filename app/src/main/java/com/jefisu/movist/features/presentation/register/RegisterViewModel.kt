@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jefisu.movist.features.data.model.InvalidMovieException
 import com.jefisu.movist.features.domain.model.Movie
-import com.jefisu.movist.features.data.model.MovieDto
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,17 +26,17 @@ class RegisterViewModel @Inject constructor(
     private val _movieDescription = mutableStateOf(MovieTextFieldState(hint = "Enter description"))
     val movieDescription: State<MovieTextFieldState> = _movieDescription
 
-    private var currentMovie: Movie? = null
+    private var _currentMovie: Movie? = null
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
-        savedStateHandle.get<Int>("movieId")?.let { movieId ->
+        savedStateHandle.get<Int>("id")?.let { movieId ->
             if (movieId != -1) {
                 viewModelScope.launch {
-                    currentMovie = movieUseCase.getMovieById(movieId)
-                    currentMovie?.let { movie ->
+                    _currentMovie = movieUseCase.getMovieById(movieId)
+                    _currentMovie?.let { movie ->
                         _movieTitle.value = movieTitle.value.copy(
                             text = movie.title,
                             isHintVisible = false
@@ -73,13 +72,18 @@ class RegisterViewModel @Inject constructor(
             is RegisterEvent.SaveMovie -> {
                 viewModelScope.launch {
                     try {
-                        movieUseCase.insert(
-                            MovieDto(
+                        if (event.id != null) {
+                            movieUseCase.insert(
                                 title = _movieTitle.value.text,
                                 description = _movieDescription.value.text,
-                                id = currentMovie?.id
+                                id = event.id
                             )
-                        )
+                        } else {
+                            movieUseCase.insert(
+                                title = _movieTitle.value.text,
+                                description = _movieDescription.value.text
+                            )
+                        }
                         _eventFlow.emit(UiEvent.SaveMovie)
                     } catch (e: InvalidMovieException) {
                         _eventFlow.emit(

@@ -1,7 +1,7 @@
 package com.jefisu.movist.features.data.database
 
 import androidx.room.*
-import com.jefisu.movist.features.data.model.Movie
+import com.jefisu.movist.features.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 @Dao

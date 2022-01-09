@@ -1,7 +1,7 @@
 package com.jefisu.movist.features.domain.use_case
 
-import com.jefisu.movist.features.data.model.InvalidMovieException
-import com.jefisu.movist.features.data.model.Movie
+import com.jefisu.movist.features.domain.model.InvalidMovieException
+import com.jefisu.movist.features.domain.model.Movie
 import com.jefisu.movist.features.domain.repository.MovieRepository
 
 class InsertMovieUseCase(

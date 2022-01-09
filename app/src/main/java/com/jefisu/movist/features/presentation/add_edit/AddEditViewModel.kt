@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jefisu.movist.features.data.model.InvalidMovieException
-import com.jefisu.movist.features.data.model.Movie
+import com.jefisu.movist.features.domain.model.InvalidMovieException
+import com.jefisu.movist.features.domain.model.Movie
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,7 +36,7 @@ class AddEditViewModel @Inject constructor(
         movieId?.let {
             if (it != -1) {
                 viewModelScope.launch {
-                    _currentMovie = movieUseCase.getMovieById(it).toMovie()
+                    _currentMovie = movieUseCase.getMovieById(it)
                     _currentMovie?.let { movie ->
                         _movieTitle.value = movieTitle.value.copy(
                             text = movie.title,
@@ -73,22 +73,13 @@ class AddEditViewModel @Inject constructor(
             is AddEditEvent.SaveMovie -> {
                 viewModelScope.launch {
                     try {
-                        if (_currentMovie?.id != null) {
-                            movieUseCase.insert(
-                                Movie(
-                                    title = _movieTitle.value.text,
-                                    description = _movieDescription.value.text,
-                                    id = _currentMovie?.id
-                                )
+                        movieUseCase.insert(
+                            Movie(
+                                title = _movieTitle.value.text,
+                                description = _movieDescription.value.text,
+                                id = _currentMovie?.id
                             )
-                        } else {
-                            movieUseCase.insert(
-                                Movie(
-                                    title = _movieTitle.value.text,
-                                    description = _movieDescription.value.text,
-                                )
-                            )
-                        }
+                        )
                         _eventFlow.emit(UiEvent.SaveMovie)
                     } catch (e: InvalidMovieException) {
                         _eventFlow.emit(

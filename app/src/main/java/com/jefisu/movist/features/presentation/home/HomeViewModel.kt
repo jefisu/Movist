@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jefisu.movist.features.data.model.InvalidMovieException
+import com.jefisu.movist.features.domain.model.InvalidMovieException
 import com.jefisu.movist.features.domain.model.Movie
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
         getMovieJob = movieUseCase.getMovies()
             .onEach { movies ->
                 _state.value = state.value.copy(
-                    movies = movies.map { it.toMovie() }
+                    movies = movies
                 )
             }
             .launchIn(viewModelScope)
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
     fun deleteMovie(movie: Movie) {
         viewModelScope.launch {
             try {
-                movieUseCase.delete(movie.toMovie())
+                movieUseCase.delete(movie)
             } catch (e: InvalidMovieException) {
                 _eventFlow.emit(
                     UiEvent.ShowSnackBar(

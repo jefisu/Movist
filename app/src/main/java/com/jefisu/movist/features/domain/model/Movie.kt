@@ -1,19 +1,14 @@
 package com.jefisu.movist.features.domain.model
 
-import com.jefisu.movist.features.data.model.Movie
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "movie")
 data class Movie(
     val title: String,
     val description: String,
-    val watched: Boolean,
-    val id: Int?
-) {
-    fun toMovie(): Movie {
-        return Movie(
-            title = title,
-            description = description,
-            watched = watched,
-            id = id
-        )
-    }
-}
+    val timestamp: Long = System.currentTimeMillis(),
+    @PrimaryKey val id: Int? = null
+)
+
+class InvalidMovieException(message: String) : Exception(message)

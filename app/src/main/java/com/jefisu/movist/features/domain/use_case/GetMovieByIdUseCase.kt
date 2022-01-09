@@ -7,6 +7,6 @@ class GetMovieByIdUseCase(
     private val repository: MovieRepository
 ) {
     suspend operator fun invoke(id: Int): Movie {
-        return repository.getMovieById(id).toMovie()
+        return repository.getMovieById(id)
     }
 }

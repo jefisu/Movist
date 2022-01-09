@@ -1,6 +1,6 @@
 package com.jefisu.movist.features.domain.repository
 
-import com.jefisu.movist.features.data.model.Movie
+import com.jefisu.movist.features.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

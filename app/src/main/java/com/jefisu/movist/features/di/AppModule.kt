@@ -3,7 +3,7 @@ package com.jefisu.movist.features.di
 import android.app.Application
 import androidx.room.Room
 import com.jefisu.movist.features.data.database.MovieDatabase
-import com.jefisu.movist.features.data.repository.MovieRepository
+import com.jefisu.movist.features.domain.repository.MovieRepository
 import com.jefisu.movist.features.data.repository.MovieRepositoryImpl
 import com.jefisu.movist.features.domain.use_case.*
 import dagger.Module

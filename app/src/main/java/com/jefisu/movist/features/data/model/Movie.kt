@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.jefisu.movist.features.domain.model.Movie
 
 @Entity(tableName = "movie")
-data class MovieDto(
+data class Movie(
     val title: String = "",
     val description: String = "",
     val watched:  Boolean = false,

@@ -1,7 +1,7 @@
 package com.jefisu.movist.features.presentation.home
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -10,13 +10,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.drawBehind
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jefisu.movist.features.presentation.home.components.DefaultCard
+import com.jefisu.movist.features.presentation.home.components.NoteItem
 import com.jefisu.movist.features.presentation.util.Screen
+import com.jefisu.movist.ui.theme.spaces
 import kotlinx.coroutines.flow.collect
 
 @ExperimentalMaterialApi
@@ -37,22 +36,10 @@ fun HomeScreen(
     }
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
-        topBar = {
-            TopAppBar(
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-                modifier = Modifier.padding(
-                    start = 15.dp,
-                    top = 5.dp
-                )
-            ) {
-                Text(text = "Your list", fontSize = 28.sp)
-            }
-        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(Screen.Add.route)
                 }
             ) {
                 Icon(
@@ -62,20 +49,31 @@ fun HomeScreen(
             }
         }
     ) {
-        LazyColumn {
-            items(viewModel.state.value.movies) { movie ->
-                DefaultCard(
-                    movie = movie,
-                    onClick = {
-                        navController.navigate(Screen.Update.route + "?id=${movie.id}") {
-                            popUpTo(Screen.Home.route)
-                            launchSingleTop = true
-                        }
-                    },
-                    onDeleteClick = {
-                        viewModel.onEvent(HomeEvent.DeleteMovie(movie))
-                    }
-                )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.spaces.medium)
+        ) {
+            Text(
+                text = "Your list",
+                style = MaterialTheme.typography.h4,
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spaces.small))
+            LazyColumn {
+                items(viewModel.state.value.movies) { movie ->
+                    NoteItem(
+                        movie = movie,
+                        onDeleteClick = viewModel::deleteMovie,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate(
+                                    Screen.Edit.route + "?id=${movie.id}"
+                                )
+                            }
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.spaces.medium))
+                }
             }
         }
     }

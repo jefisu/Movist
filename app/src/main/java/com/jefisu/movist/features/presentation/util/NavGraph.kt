@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jefisu.movist.features.presentation.home.HomeScreen
-import com.jefisu.movist.features.presentation.register.RegisterScreen
+import com.jefisu.movist.features.presentation.add_edit.AddEditScreen
 import com.jefisu.movist.features.presentation.splash.SplashScreen
 
 @ExperimentalMaterialApi
@@ -24,21 +24,18 @@ fun NavGraph(navController: NavHostController) {
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
         }
-        composable(route = Screen.Register.route) {
-            RegisterScreen(navController = navController)
+        composable(route = Screen.Add.route) {
+            AddEditScreen(navController = navController)
         }
         composable(
-            route = Screen.Update.route + "?id={id}",
+            route = Screen.Edit.route + "?id={id}",
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType
                 }
             )
-        ) { entry ->
-            val movieId = entry.arguments?.getInt("id")
-            movieId?.let {
-                RegisterScreen(id = it, navController = navController)
-            }
+        ) {
+            AddEditScreen(navController = navController)
         }
     }
 }

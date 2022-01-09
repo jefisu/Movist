@@ -1,4 +1,4 @@
-package com.jefisu.movist.features.presentation.register
+package com.jefisu.movist.features.presentation.add_edit
 
 data class MovieTextFieldState(
     val text: String = "",

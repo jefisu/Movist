@@ -1,18 +1,20 @@
 package com.jefisu.movist.features.domain.use_case
 
-import com.jefisu.movist.features.data.model.MovieDto
-import com.jefisu.movist.features.data.repository.MovieRepository
+import com.jefisu.movist.features.data.model.InvalidMovieException
+import com.jefisu.movist.features.data.model.Movie
+import com.jefisu.movist.features.domain.repository.MovieRepository
 
 class InsertMovieUseCase(
     private val repository: MovieRepository
 ) {
-    suspend operator fun invoke(title: String, description: String, id: Int? = null) {
-        if (id != null) {
-            val movie = MovieDto(title, description, id = id)
-            repository.insertMovie(movie)
-        } else {
-            val movie = MovieDto(title, description)
-            repository.insertMovie(movie)
+    @Throws(InvalidMovieException::class)
+    suspend operator fun invoke(movie: Movie) {
+        if (movie.title.isBlank()) {
+            throw InvalidMovieException("The title of the note can't be empty.")
         }
+        if (movie.description.isBlank()) {
+            throw InvalidMovieException("The content of the note can't be empty.")
+        }
+        repository.insertMovie(movie)
     }
 }

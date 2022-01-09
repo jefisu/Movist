@@ -1,5 +1,6 @@
-package com.jefisu.movist.features.presentation.register
+package com.jefisu.movist.features.presentation.add_edit
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -7,19 +8,21 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jefisu.movist.features.presentation.util.Screen
-import com.jefisu.movist.features.presentation.register.components.TransparentHintTextField
+import com.jefisu.movist.features.presentation.add_edit.components.TransparentHintTextField
+import com.jefisu.movist.ui.theme.spaces
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalMaterialApi
 @Composable
-fun RegisterScreen(
-    id: Int? = null,
+fun AddEditScreen(
     navController: NavController,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: AddEditViewModel = hiltViewModel()
 ) {
     val titleState = viewModel.movieTitle.value
     val descriptionState = viewModel.movieDescription.value
@@ -28,58 +31,68 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is RegisterViewModel.UiEvent.ShowSnackBar -> {
+                is AddEditViewModel.UiEvent.ShowSnackBar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message)
+                        message = event.message
+                    )
+                }
+                is AddEditViewModel.UiEvent.SaveMovie -> {
+                    navController.navigateUp()
                 }
             }
         }
     }
-
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if (id != null) viewModel.onEvent(RegisterEvent.SaveMovie(id))
-                    else viewModel.onEvent(RegisterEvent.SaveMovie())
-                    navController.navigate(Screen.Home.route)
+                    viewModel.onEvent(AddEditEvent.SaveMovie)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Save, contentDescription = "Save")
             }
-        }
+        },
+        scaffoldState = scaffoldState
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .padding(MaterialTheme.spaces.medium)
         ) {
             TransparentHintTextField(
                 text = titleState.text,
                 hint = titleState.hint,
                 onValueChange = {
-                    viewModel.onEvent(RegisterEvent.EnteredTitle(it))
+                    viewModel.onEvent(AddEditEvent.EnteredTitle(it))
                 },
                 onFocusChange = {
-                    viewModel.onEvent(RegisterEvent.ChangeTitleFocus(it))
+                    viewModel.onEvent(AddEditEvent.ChangeTitleFocus(it))
                 },
                 isHintVisible = titleState.isHintVisible,
                 singleLine = true,
-                textStyle = MaterialTheme.typography.h5,
+                textStyle = TextStyle(
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    fontSize = MaterialTheme.typography.h5.fontSize,
+                    letterSpacing = MaterialTheme.typography.h5.letterSpacing
+                )
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spaces.small))
             TransparentHintTextField(
                 text = descriptionState.text,
                 hint = descriptionState.hint,
                 onValueChange = {
-                    viewModel.onEvent(RegisterEvent.EnteredDescription(it))
+                    viewModel.onEvent(AddEditEvent.EnteredDescription(it))
                 },
                 onFocusChange = {
-                    viewModel.onEvent(RegisterEvent.ChangeDescriptionFocus(it))
+                    viewModel.onEvent(AddEditEvent.ChangeDescriptionFocus(it))
                 },
                 isHintVisible = descriptionState.isHintVisible,
-                textStyle = MaterialTheme.typography.body1,
+                textStyle = TextStyle(
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    fontSize = MaterialTheme.typography.body1.fontSize,
+                    letterSpacing = MaterialTheme.typography.body1.letterSpacing
+                ),
                 modifier = Modifier.fillMaxHeight()
             )
         }

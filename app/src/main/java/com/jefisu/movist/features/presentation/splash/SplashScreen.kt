@@ -28,7 +28,8 @@ fun SplashScreen(navController: NavController) {
     }
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(2000L)
+        delay(1000L)
+        navController.popBackStack()
         navController.navigate(Screen.Home.route)
     }
     Box(
@@ -42,11 +43,11 @@ fun SplashScreen(navController: NavController) {
             contentDescription = "Icon splash",
             tint = Color.White,
             modifier = Modifier
-                .size(120.dp)
+                .size(130.dp)
                 .alpha(
                     animateFloatAsState(
                         targetValue = if (startAnimation) 1f else 0f,
-                        animationSpec = tween(durationMillis = 2000)
+                        animationSpec = tween(durationMillis = 1500)
                     ).value
                 )
         )

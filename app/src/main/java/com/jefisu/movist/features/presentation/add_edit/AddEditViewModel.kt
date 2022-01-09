@@ -1,4 +1,4 @@
-package com.jefisu.movist.features.presentation.register
+package com.jefisu.movist.features.presentation.add_edit
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jefisu.movist.features.data.model.InvalidMovieException
-import com.jefisu.movist.features.domain.model.Movie
+import com.jefisu.movist.features.data.model.Movie
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class AddEditViewModel @Inject constructor(
     private val movieUseCase: MovieUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -32,10 +32,11 @@ class RegisterViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
-        savedStateHandle.get<Int>("id")?.let { movieId ->
-            if (movieId != -1) {
+        val movieId = savedStateHandle.get<Int>("id")
+        movieId?.let {
+            if (it != -1) {
                 viewModelScope.launch {
-                    _currentMovie = movieUseCase.getMovieById(movieId)
+                    _currentMovie = movieUseCase.getMovieById(it).toMovie()
                     _currentMovie?.let { movie ->
                         _movieTitle.value = movieTitle.value.copy(
                             text = movie.title,
@@ -51,37 +52,41 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: RegisterEvent) {
+    fun onEvent(event: AddEditEvent) {
         when (event) {
-            is RegisterEvent.EnteredTitle -> {
+            is AddEditEvent.EnteredTitle -> {
                 _movieTitle.value = movieTitle.value.copy(text = event.value)
             }
-            is RegisterEvent.ChangeTitleFocus -> {
+            is AddEditEvent.ChangeTitleFocus -> {
                 _movieTitle.value = movieTitle.value.copy(
                     isHintVisible = !event.focusState.isFocused && _movieTitle.value.text.isBlank()
                 )
             }
-            is RegisterEvent.EnteredDescription -> {
+            is AddEditEvent.EnteredDescription -> {
                 _movieDescription.value = movieDescription.value.copy(text = event.value)
             }
-            is RegisterEvent.ChangeDescriptionFocus -> {
+            is AddEditEvent.ChangeDescriptionFocus -> {
                 _movieDescription.value = movieDescription.value.copy(
                     isHintVisible = !event.focusState.isFocused && _movieDescription.value.text.isBlank()
                 )
             }
-            is RegisterEvent.SaveMovie -> {
+            is AddEditEvent.SaveMovie -> {
                 viewModelScope.launch {
                     try {
-                        if (event.id != null) {
+                        if (_currentMovie?.id != null) {
                             movieUseCase.insert(
-                                title = _movieTitle.value.text,
-                                description = _movieDescription.value.text,
-                                id = event.id
+                                Movie(
+                                    title = _movieTitle.value.text,
+                                    description = _movieDescription.value.text,
+                                    id = _currentMovie?.id
+                                )
                             )
                         } else {
                             movieUseCase.insert(
-                                title = _movieTitle.value.text,
-                                description = _movieDescription.value.text
+                                Movie(
+                                    title = _movieTitle.value.text,
+                                    description = _movieDescription.value.text,
+                                )
                             )
                         }
                         _eventFlow.emit(UiEvent.SaveMovie)

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jefisu.movist.features.data.model.InvalidMovieException
+import com.jefisu.movist.features.domain.model.Movie
 import com.jefisu.movist.features.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -43,20 +44,16 @@ class HomeViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun onEvent(event: HomeEvent) {
-        when (event) {
-            is HomeEvent.DeleteMovie -> {
-                viewModelScope.launch {
-                    try {
-                        movieUseCase.delete(event.movie.toMovieDto())
-                    } catch (e: InvalidMovieException) {
-                        _eventFlow.emit(
-                            UiEvent.ShowSnackBar(
-                                message = e.message ?: "Couldn't delete movie"
-                            )
-                        )
-                    }
-                }
+    fun deleteMovie(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                movieUseCase.delete(movie.toMovie())
+            } catch (e: InvalidMovieException) {
+                _eventFlow.emit(
+                    UiEvent.ShowSnackBar(
+                        message = e.message ?: "Couldn't delete movie"
+                    )
+                )
             }
         }
     }

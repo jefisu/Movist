@@ -1,21 +1,15 @@
-package com.jefisu.movist.features.data.database
+package com.jefisu.movist.features.domain.repository
 
-import androidx.room.*
 import com.jefisu.movist.features.data.model.Movie
 import kotlinx.coroutines.flow.Flow
 
-@Dao
-interface MovieDao {
+interface MovieRepository {
 
-    @Query("SELECT * FROM movie")
     fun getMovies(): Flow<List<Movie>>
 
-    @Query("SELECT * FROM movie WHERE id = :id")
     suspend fun getMovieById(id: Int): Movie
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(Movie: Movie)
 
-    @Delete
     suspend fun deleteMovie(movie: Movie)
 }

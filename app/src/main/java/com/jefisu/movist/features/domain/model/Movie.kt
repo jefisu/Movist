@@ -1,6 +1,6 @@
 package com.jefisu.movist.features.domain.model
 
-import com.jefisu.movist.features.data.model.MovieDto
+import com.jefisu.movist.features.data.model.Movie
 
 data class Movie(
     val title: String,
@@ -8,8 +8,8 @@ data class Movie(
     val watched: Boolean,
     val id: Int?
 ) {
-    fun toMovieDto(): MovieDto {
-        return MovieDto(
+    fun toMovie(): Movie {
+        return Movie(
             title = title,
             description = description,
             watched = watched,

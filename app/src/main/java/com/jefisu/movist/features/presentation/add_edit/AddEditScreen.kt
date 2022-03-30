@@ -73,8 +73,8 @@ fun AddEditScreen(
                 singleLine = true,
                 textStyle = TextStyle(
                     color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    letterSpacing = MaterialTheme.typography.h5.letterSpacing
+                    fontSize = MaterialTheme.typography.h4.fontSize,
+                    letterSpacing = MaterialTheme.typography.h4.letterSpacing
                 )
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spaces.small))
@@ -90,8 +90,8 @@ fun AddEditScreen(
                 isHintVisible = descriptionState.isHintVisible,
                 textStyle = TextStyle(
                     color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                    fontSize = MaterialTheme.typography.body1.fontSize,
-                    letterSpacing = MaterialTheme.typography.body1.letterSpacing
+                    fontSize = MaterialTheme.typography.h6.fontSize,
+                    letterSpacing = MaterialTheme.typography.h6.letterSpacing
                 ),
                 modifier = Modifier.fillMaxHeight()
             )

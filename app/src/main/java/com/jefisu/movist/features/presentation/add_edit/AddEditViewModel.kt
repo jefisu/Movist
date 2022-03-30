@@ -20,10 +20,10 @@ class AddEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _movieTitle = mutableStateOf(MovieTextFieldState(hint = "Enter title"))
+    private val _movieTitle = mutableStateOf(MovieTextFieldState(hint = "Title"))
     val movieTitle: State<MovieTextFieldState> = _movieTitle
 
-    private val _movieDescription = mutableStateOf(MovieTextFieldState(hint = "Enter description"))
+    private val _movieDescription = mutableStateOf(MovieTextFieldState(hint = "Description"))
     val movieDescription: State<MovieTextFieldState> = _movieDescription
 
     private var _currentMovie: Movie? = null
